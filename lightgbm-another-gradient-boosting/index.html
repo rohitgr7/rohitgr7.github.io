@@ -1,0 +1,437 @@
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>LightGBM - Another gradient boosting algorithm</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="../assets/built/screen.css?v=b3d76577c3">
+
+    <link rel="shortcut icon" href="../favicon.png" type="image/png">
+    <link rel="canonical" href="http://rohitgr7.github.io/lightgbm-another-gradient-boosting/">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="http://rohitgr7.github.io/lightgbm-another-gradient-boosting/amp/">
+    
+    <meta property="og:site_name" content="Rohit Gupta">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="LightGBM - Another gradient boosting algorithm">
+    <meta property="og:description" content="Gradient boosting decision tree(GBDT) is one of the top choices for kagglers and machine learning practitioners. Most of the best kernels and winning solutions on kaggle end up using one of the gradient boosting algorithm. It can be XGBoost, LightGBM or maybe some other optimized gradient boosting algorithm. So,">
+    <meta property="og:url" content="http://rohitgr7.github.io/lightgbm-another-gradient-boosting/">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1447350152302-65042359f14f?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ">
+    <meta property="article:published_time" content="2019-03-27T18:48:44.000Z">
+    <meta property="article:modified_time" content="2019-03-27T18:48:44.000Z">
+    <meta property="article:tag" content="machine learning">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="LightGBM - Another gradient boosting algorithm">
+    <meta name="twitter:description" content="Gradient boosting decision tree(GBDT) is one of the top choices for kagglers and machine learning practitioners. Most of the best kernels and winning solutions on kaggle end up using one of the gradient boosting algorithm. It can be XGBoost, LightGBM or maybe some other optimized gradient boosting algorithm. So,">
+    <meta name="twitter:url" content="http://rohitgr7.github.io/lightgbm-another-gradient-boosting/">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1447350152302-65042359f14f?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Rohit Gupta">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="machine learning">
+    <meta name="twitter:site" content="@iamroht">
+    <meta name="twitter:creator" content="@iamroht">
+    <meta property="og:image:width" content="1080">
+    <meta property="og:image:height" content="720">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Rohit Gupta",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://rohitgr7.github.io/favicon.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Rohit Gupta",
+        "url": "http://rohitgr7.github.io/author/rohit/",
+        "sameAs": [
+            "https://twitter.com/iamroht"
+        ]
+    },
+    "headline": "LightGBM - Another gradient boosting algorithm",
+    "url": "http://rohitgr7.github.io/lightgbm-another-gradient-boosting/",
+    "datePublished": "2019-03-27T18:48:44.000Z",
+    "dateModified": "2019-03-27T18:48:44.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://images.unsplash.com/photo-1447350152302-65042359f14f?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjExNzczfQ",
+        "width": 1080,
+        "height": 720
+    },
+    "keywords": "machine learning",
+    "description": "Gradient boosting decision tree(GBDT) is one of the top choices for kagglers and machine learning practitioners. Most of the best kernels and winning solutions on kaggle end up using one of the gradient boosting algorithm. It can be XGBoost, LightGBM or maybe some other optimized gradient boosting algorithm. So,",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://rohitgr7.github.io/"
+    }
+}
+    </script>
+
+    <script src="../public/ghost-sdk.min.js?v=b3d76577c3"></script>
+<script>
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "06d2d2e7bac7"
+});
+</script>
+    <meta name="generator" content="Ghost 2.9">
+    <link rel="alternate" type="application/rss+xml" title="Rohit Gupta" href="http://rohitgr7.github.io/rss/">
+
+</head>
+<body class="post-template tag-machine-learning">
+
+    <div class="site-wrapper">
+
+        
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+                <a class="site-nav-logo" href="http://rohitgr7.github.io">Rohit Gupta</a>
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="http://rohitgr7.github.io/">Home</a></li>
+    <li class="nav-about" role="menuitem"><a href="http://rohitgr7.github.io/about/">About</a></li>
+    <li class="nav-tag" role="menuitem"><a href="http://rohitgr7.github.io/tags/">Tag</a></li>
+</ul>
+
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+                <a class="social-link social-link-tw" href="https://twitter.com/iamroht" title="Twitter" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"></path></svg>
+</a>
+        </div>
+            <a class="rss-button" href="https://feedly.com/i/subscription/feed/http://rohitgr7.github.io/rss/" title="RSS" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><circle cx="6.18" cy="17.82" r="2.18"></circle><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"></path></svg>
+</a>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post tag-machine-learning ">
+
+            <header class="post-full-header">
+                <section class="post-full-meta">
+                    <time class="post-full-meta-date" datetime="2019-03-28">28 March 2019</time>
+                        <span class="date-divider">/</span> <a href="../tag/machine-learning/">machine learning</a>
+                </section>
+                <h1 class="post-full-title">LightGBM - Another gradient boosting algorithm</h1>
+            </header>
+
+            <figure class="post-full-image">
+                <img srcset="https://images.unsplash.com/photo-1447350152302-65042359f14f?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 300w,
+                            https://images.unsplash.com/photo-1447350152302-65042359f14f?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 600w,
+                            https://images.unsplash.com/photo-1447350152302-65042359f14f?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 1000w,
+                            https://images.unsplash.com/photo-1447350152302-65042359f14f?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 2000w" sizes="(max-width: 800px) 400px,
+                            (max-width: 1170px) 700px,
+                            1400px" src="https://images.unsplash.com/photo-1447350152302-65042359f14f?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ" alt="LightGBM - Another gradient boosting algorithm">
+            </figure>
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <p>Gradient boosting decision tree(GBDT) is one of the top choices for kagglers and machine learning practitioners. Most of the best kernels and winning solutions on kaggle end up using one of the gradient boosting algorithm. It can be XGBoost, LightGBM or maybe some other optimized gradient boosting algorithm. So, in this blog, I will be talking about LightGBM and we will also get our hands dirty while implementing it on a dataset. Will try my best to keep this blog concise and complete.</p><figure class="kg-card kg-image-card"><img src="../content/images/2019/03/2x3fpr.jpg" class="kg-image"></figure><h2 id="gettingstarted">Getting started</h2>
+<p>XGBoost and LightGBM are not the only implementations of GBDTs but they are insanely used because:</p>
+<ol>
+<li>they are easy to use</li>
+<li>have similar API as that of scikit-learn models</li>
+<li>have easy-to-use open source implementation and docs</li>
+</ol>
+<p>Scikit-learn also has its own implementation of GBDT but it is slower and does not have certain important features that these new model possess.</p>
+<h2 id="tableofcontents">Table of contents</h2>
+<ul>
+<li><a href="index.html#background">Background</a></li>
+<li><a href="index.html#introduction">Introduction</a></li>
+<li><a href="index.html#whylightgbm">Why LightGBM?</a></li>
+<li><a href="index.html#difference-in-lightgbm-and-xgboost">Difference in LightGBM and XGBoost</a></li>
+<li><a href="index.html#parameters">Parameters</a></li>
+<li><a href="index.html#installationandimplementation">Installation and Implementation</a></li>
+</ul>
+<h3 id="background">Background</h3>
+<p>Before learning LightGBM you should know what GBDT and before that, you should know what boosing is. Boosting is a sequential ensembling technique where hard to classify instances are given more weights which will help subsequent learners to put more emphases of learning these misclassified instances and final model is the weighted average of these weak learners.<br>
+Gradient Boosting Decision Tree(GBDT) is an ensemble of decision trees trained in a sequence where the errors from the previously trained tree are added to the new decision tree in the next iteration. This means every subsequent learner will try to learn the difference between the actual output and the predictions.</p>
+<figure class="kg-card kg-image-card"><img src="../content/images/2019/03/Screenshot-from-2019-03-27-23-08-07-1.png" class="kg-image"><figcaption><a href="https://www.slideshare.net/GabrielCyprianoSaca/xgboost-lightgbm">Source</a></figcaption></figure><p>Decision trees split the data based on the features in order to predict some numerical value which can be used in case of both regression and classification. LightGBM uses an ensemble of decision trees because a single tree is prone to overfitting. The split depends upon the entropy and information-gain which basically defines the degree of chaos in the dataset. More is the information-gain better is the split. You can read how it works in <a href="https://nbviewer.jupyter.org/github/Yorko/mlcourse_open/blob/master/jupyter_english/topic03_decision_trees_kNN/topic3_decision_trees_kNN.ipynb?flush_cache=true">this kernel</a>.</p>
+<h3 id="introduction">Introduction</h3>
+<p>LightGBM grows tree leaf-wise i.e. it grows vertically as compared to other algorithms which grow horizontally(level-wise growth). Although leaf-wise growing is more prone to overfitting that's why it is advised to use LightGBM for large datasets. Also, while growing leaf-wise the loss can be reduced more effectively. The errors are minimized using the gradient-based method. Level-wise growth maintains a balanced tree, whereas the leaf-wise strategy splits the leaf that reduces the loss the most. Also, leaf-wise growth can end up in a balanced tree if required but vice-versa is not possible. If you have already worked with tree-based algorithms then you need to take care of the max_depth parameter here. A tree using leaf-wise will be deeper as compared to the other one but can have the same number of leaves.</p>
+<h3 id="whylightgbm">Why LightGBM?</h3>
+<p><img src="../content/images/2019/03/Screenshot-from-2019-03-27-23-34-07.png" alt="Screenshot-from-2019-03-27-23-34-07"></p>
+<p>LightGBM is better because it supports GPU learning, uses lesser memory and faster processing with large datasets and that's all we want. Still, we cannot LightGBM everywhere because of <a href="https://en.wikipedia.org/wiki/No_free_lunch_theorem">no free lunch theorem</a>. It is sensitive to smaller dataset so I suggest to use it only when you have around 10,000+ rows.</p>
+<p>Similar to CatBoost, LightGBM can handle categorical features by taking the input of feature names but in a different way. LGBM uses a special algorithm to find the split value of categorical features(<a href="http://www.csiss.org/SPACE/workshops/2004/SAC/files/fisher.pdf">link</a>).</p>
+<blockquote>
+<p>Note: You should convert your categorical features to <code>category</code> type before your construct Dataset. It does not accept string values even if you pass it through the categorical_feature parameter inside during training.</p>
+</blockquote>
+<h2 id="difference-in-lightgbm-and-xgboost">Difference in LightGBM and XGBoost</h2><figure class="kg-card kg-image-card"><img src="../content/images/2019/03/Screenshot-from-2019-03-27-23-09-47-1.png" class="kg-image"><figcaption><a href="https://www.slideshare.net/GabrielCyprianoSaca/xgboost-lightgbm">Source</a></figcaption></figure><p>LightGBM uses a novel technique of Gradient-based One-Side Sampling (GOSS) to filter out the data instances for finding a split value while XGBoost uses pre-sorted algorithm &amp; Histogram-based algorithm for computing the best split.</p>
+<p>First, let us understand how pre-sorting splitting works:</p>
+<ol>
+<li>For each node, enumerate over all the features</li>
+<li>For each feature, sort the instances by the feature value</li>
+<li>Use a linear scan to decide the best split along that feature basis information gain</li>
+<li>Take the best split solution along with all the features</li>
+</ol>
+<p>In simple terms, Histogram-based algorithm splits all the data points for a feature into discrete bins and uses these bins to find the split value of histogram. While it is efficient than the pre-sorted algorithm in training speed which enumerates all possible split points on the pre-sorted feature values, it is still behind GOSS in terms of speed.</p>
+<p><strong>So what makes this GOSS method efficient?</strong><br>
+In AdaBoost, the sample weight serves as a good indicator to get the importance of samples. However, in Gradient Boosting Decision Tree (GBDT), there are no native sample weights, and thus the sampling methods proposed for AdaBoost cannot be directly applied. Here comes gradient-based sampling.</p>
+<p>Gradient represents the slope of the tangent of the loss function, so logically if the gradient of data points are large in some sense, these points are important for finding the optimal split point as they have a higher error.</p>
+<p>The basic assumption taken here is that samples with training instances with small gradients have smaller training error and it is already well-trained. In order to keep the same data distribution, when computing the information gain, GOSS introduces a constant multiplier for the data instances with small gradients. Thus, GOSS achieves a good balance between reducing the number of data instances and keeping the accuracy for learned decision trees.</p>
+<h3 id="parameters">Parameters</h3>
+<p>LightGBM comes with a lot of parameters and makes parameter tuning a little more complicated. Don't worry if you are just getting started with LightGBM then you don't need to learn them all. Start with the basic ones and you will learn more about others when you start using and practicing it more on different datasets. But most of the time these basic ones are enough to get a robust model.</p>
+<p>These parameters are copied directly from the <a href="https://lightgbm.readthedocs.io/en/latest/Parameters.html">website</a>.</p>
+<h4 id="coreparameters">Core Parameters</h4>
+<p><strong>1. task (default: 'train')</strong>: It specifies the task you want to do (training or prediction).<br>
+<strong>2. objective (default: 'regression')</strong>: Specifies the application of your model. It can be regression, binary, multiclass etc.<br>
+<strong>3. boosting (default: 'gbdt')</strong>: Specifies the type of boosting algorithm. It can be gbdt, rf, dart or goss. You can read more about them <a href="https://medium.com/@abhisheksharma_57055/what-makes-lightgbm-lightning-fast-a27cf0d9785e#1084">here</a>.<br>
+<strong>4. num_boost_round (default: 100)</strong>: Number of boosting iterations.<br>
+<strong>5. learning_rate (default: 0.1)</strong>: Determines the impact of each tree on the final outcome.<br>
+<strong>6. num_leaver (default: 31)</strong>: Specifies the maximum number of trees in one tree.<br>
+<strong>7. device_type (default: 'cpu')</strong>: Specifies the type of device you want to use (cpu or gpu).</p>
+<h4 id="controlparameters">Control parameters</h4>
+<p><strong>1. max_depth (default: -1)</strong>: It describes the maximum depth of the tree you want. If you think your model is overfitting just reduce the max_depth.<br>
+<strong>2. min_data_in_leaf (default: 20)</strong>: It describes minimum samples in a leaf. For eg., if it is 20 then it will not split. Increase its value when you feel your model is overfitting.<br>
+<strong>3. feature_fraction (default: 1.0)</strong>: Its value is &lt;= 1.0. For eg., if it is 0.7 then the model will select 70% of the total features randomly in each iteration for building trees. Also used to avoid overfitting and better generalization of data.<br>
+<strong>4. bagging_fraction (default: 1.0)</strong>: Similar to feature_fration but used to rows i.e. it will randomly select part of data without resampling. Can reduce training time and overfitting.<br>
+<strong>5. early_stopping_round (default: 0)</strong>: Model will stop training if one metric of one validation data doesn't improve in last 'early_stopping_round' rounds.<br>
+<strong>6. min_gain_to_split (default: 0.)</strong>: It specifies the minimum gain required to split a leaf.<br>
+<strong>7. lambda_l1 (default: 0.0)</strong>: Parameter for L1 regularization<br>
+<strong>8. lambda_l2 (default: 0.0)</strong>: Parameter for L2 regularization.<br>
+<strong>9. max_cat_to_onehot(default: 4)</strong>: When number of categories for a particular columns is &lt;= 'max_cat_to_onehot', one-vs-other split algorithm will be used.</p>
+<h4 id="metricparameters">Metric Parameters</h4>
+<p><strong>1. metric (default: "")</strong>: Specifies the metric to use as a loss function. In the default case, the model will choose the metric relevant to the objective. You can choose from auc, binary_logloss, softmax, mae, mse and many more.<br>
+<strong>2. is_provide_training_metric (default: False)</strong>: Set this to true to output metric result over training dataset.<br>
+<strong>3. metric_freq (default: 1)</strong>: Defines frequency for metric output.</p>
+<p>You can learn more about parameters from the <a href="https://lightgbm.readthedocs.io/en/latest/Parameters.html">website</a> but generally, these are enough.</p>
+<h3 id="installationandimplementation">Installation and Implementation</h3>
+<p>Installation is pretty simple just run <code>pip install lightgbm</code> in your terminal.<br>
+Refer to <a href="https://www.kaggle.com/rohitgr/lgbm-bayesianoptimization-eda">this kaggle kernel</a> to get an overview of the LightGBM and how to implement it plus you can learn how to use <strong>bayesian optimization</strong> I used for parameter tuning. Also, you can fork and upvote it if you like.</p>
+
+                </div>
+            </section>
+
+
+            <footer class="post-full-footer">
+
+
+                    
+<section class="author-card">
+        <span class="avatar-wrapper"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"></path></g></svg>
+</span>
+    <section class="author-card-content">
+        <h4 class="author-card-name"><a href="../author/rohit/">Rohit Gupta</a></h4>
+            <p>Read <a href="../author/rohit/">more posts</a> by this author.</p>
+    </section>
+</section>
+<div class="post-full-footer-right">
+    <a class="author-card-button" href="../author/rohit/">Read More</a>
+</div>
+
+
+            </footer>
+
+
+        </article>
+
+    </div>
+</main>
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+
+
+                <article class="post-card post tag-hacks ">
+
+    <a class="post-card-image-link" href="../faster-preprocessing-with-fastai/">
+        <img class="post-card-image" srcset="https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 300w,
+                    https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 600w,
+                    https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 1000w,
+                    https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 2000w" sizes="(max-width: 1000px) 400px, 700px" src="https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ" alt="Faster preprocessing with FastAI">
+    </a>
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="../faster-preprocessing-with-fastai/">
+
+            <header class="post-card-header">
+                    <span class="post-card-tags">hacks</span>
+                <h2 class="post-card-title">Faster preprocessing with FastAI</h2>
+            </header>
+
+            <section class="post-card-excerpt">
+                <p>This is a short blog which can help you preprocess your data even faster. Whenever you do machine learning, data may not be available in the form you want to train your models.</p>
+            </section>
+
+        </a>
+
+        <footer class="post-card-meta">
+
+            <ul class="author-list">
+                <li class="author-list-item">
+
+                    <div class="author-name-tooltip">
+                        Rohit Gupta
+                    </div>
+
+                        <a href="../author/rohit/" class="static-avatar author-profile-image"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"></path></g></svg>
+</a>
+                </li>
+            </ul>
+
+            <span class="reading-time">2 min read</span>
+
+        </footer>
+
+    </div>
+
+</article>
+
+        </div>
+    </div>
+</aside>
+
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="http://rohitgr7.github.io">
+                <img src="../content/images/size/w30/2019/01/android-chrome-512x512.png" alt="Rohit Gupta icon">
+            <span>Rohit Gupta</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">—</span>
+    <div class="floating-header-title">LightGBM - Another gradient boosting algorithm</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"></path>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=LightGBM%20-%20Another%20gradient%20boosting%20algorithm&amp;url=http://rohitgr7.github.io/lightgbm-another-gradient-boosting/" onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"></path></svg>
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=http://rohitgr7.github.io/lightgbm-another-gradient-boosting/" onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"></path></svg>
+        </a>
+    </div>
+    <progress id="reading-progress" class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="http://rohitgr7.github.io">Rohit Gupta</a> © 2019</section>
+                <nav class="site-footer-nav">
+                    <a href="http://rohitgr7.github.io">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/iamroht" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <script>
+        var images = document.querySelectorAll('.kg-gallery-image img');
+        images.forEach(function (image) {
+            var container = image.closest('.kg-gallery-image');
+            var width = image.attributes.width.value;
+            var height = image.attributes.height.value;
+            var ratio = width / height;
+            container.style.flex = ratio + ' 1 0%';
+        })
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="../assets/built/jquery.fitvids.js?v=b3d76577c3"></script>
+
+
+    <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('#reading-progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+
+});
+</script>
+
+
+    
+
+</body>
