@@ -1,0 +1,401 @@
+
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>Faster preprocessing with FastAI</title>
+    <meta name="HandheldFriendly" content="True">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" type="text/css" href="../assets/built/screen.css?v=b3d76577c3">
+
+    <link rel="shortcut icon" href="../favicon.png" type="image/png">
+    <link rel="canonical" href="http://rohitgr7.github.io/faster-preprocessing-with-fastai/">
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    <link rel="amphtml" href="http://rohitgr7.github.io/faster-preprocessing-with-fastai/amp/">
+    
+    <meta property="og:site_name" content="Rohit Gupta">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Faster preprocessing with FastAI">
+    <meta property="og:description" content="This is a short blog which can help you preprocess your data even faster. Whenever you do machine learning, data may not be available in the form you want to train your models. You need to preprocess it. This may take a lot of time if you have a lot">
+    <meta property="og:url" content="http://rohitgr7.github.io/faster-preprocessing-with-fastai/">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ">
+    <meta property="article:published_time" content="2019-03-27T09:56:11.000Z">
+    <meta property="article:modified_time" content="2019-03-27T09:56:11.000Z">
+    <meta property="article:tag" content="hacks">
+    
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Faster preprocessing with FastAI">
+    <meta name="twitter:description" content="This is a short blog which can help you preprocess your data even faster. Whenever you do machine learning, data may not be available in the form you want to train your models. You need to preprocess it. This may take a lot of time if you have a lot">
+    <meta name="twitter:url" content="http://rohitgr7.github.io/faster-preprocessing-with-fastai/">
+    <meta name="twitter:image" content="https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ">
+    <meta name="twitter:label1" content="Written by">
+    <meta name="twitter:data1" content="Rohit Gupta">
+    <meta name="twitter:label2" content="Filed under">
+    <meta name="twitter:data2" content="hacks">
+    <meta name="twitter:site" content="@iamroht">
+    <meta name="twitter:creator" content="@iamroht">
+    <meta property="og:image:width" content="1080">
+    <meta property="og:image:height" content="717">
+    
+    <script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "publisher": {
+        "@type": "Organization",
+        "name": "Rohit Gupta",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "http://rohitgr7.github.io/favicon.png",
+            "width": 60,
+            "height": 60
+        }
+    },
+    "author": {
+        "@type": "Person",
+        "name": "Rohit Gupta",
+        "url": "http://rohitgr7.github.io/author/rohit/",
+        "sameAs": [
+            "https://twitter.com/iamroht"
+        ]
+    },
+    "headline": "Faster preprocessing with FastAI",
+    "url": "http://rohitgr7.github.io/faster-preprocessing-with-fastai/",
+    "datePublished": "2019-03-27T09:56:11.000Z",
+    "dateModified": "2019-03-27T09:56:11.000Z",
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&q=80&fm=jpg&crop=entropy&cs=tinysrgb&w=1080&fit=max&ixid=eyJhcHBfaWQiOjExNzczfQ",
+        "width": 1080,
+        "height": 717
+    },
+    "keywords": "hacks",
+    "description": "This is a short blog which can help you preprocess your data even faster. Whenever you do machine learning, data may not be available in the form you want to train your models. You need to preprocess it. This may take a lot of time if you have a lot",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "http://rohitgr7.github.io/"
+    }
+}
+    </script>
+
+    <script src="../public/ghost-sdk.min.js?v=b3d76577c3"></script>
+<script>
+ghost.init({
+	clientId: "ghost-frontend",
+	clientSecret: "06d2d2e7bac7"
+});
+</script>
+    <meta name="generator" content="Ghost 2.9">
+    <link rel="alternate" type="application/rss+xml" title="Rohit Gupta" href="http://rohitgr7.github.io/rss/">
+
+</head>
+<body class="post-template tag-hacks">
+
+    <div class="site-wrapper">
+
+        
+
+<header class="site-header outer">
+    <div class="inner">
+        <nav class="site-nav">
+    <div class="site-nav-left">
+                <a class="site-nav-logo" href="http://rohitgr7.github.io">Rohit Gupta</a>
+            <ul class="nav" role="menu">
+    <li class="nav-home" role="menuitem"><a href="http://rohitgr7.github.io/">Home</a></li>
+    <li class="nav-about" role="menuitem"><a href="http://rohitgr7.github.io/about/">About</a></li>
+    <li class="nav-tag" role="menuitem"><a href="http://rohitgr7.github.io/tags/">Tag</a></li>
+</ul>
+
+    </div>
+    <div class="site-nav-right">
+        <div class="social-links">
+                <a class="social-link social-link-tw" href="https://twitter.com/iamroht" title="Twitter" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"></path></svg>
+</a>
+        </div>
+            <a class="rss-button" href="https://feedly.com/i/subscription/feed/http://rohitgr7.github.io/rss/" title="RSS" target="_blank" rel="noopener"><svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24"><circle cx="6.18" cy="17.82" r="2.18"></circle><path d="M4 4.44v2.83c7.03 0 12.73 5.7 12.73 12.73h2.83c0-8.59-6.97-15.56-15.56-15.56zm0 5.66v2.83c3.9 0 7.07 3.17 7.07 7.07h2.83c0-5.47-4.43-9.9-9.9-9.9z"></path></svg>
+</a>
+    </div>
+</nav>
+    </div>
+</header>
+
+
+<main id="site-main" class="site-main outer">
+    <div class="inner">
+
+        <article class="post-full post tag-hacks ">
+
+            <header class="post-full-header">
+                <section class="post-full-meta">
+                    <time class="post-full-meta-date" datetime="2019-03-27">27 March 2019</time>
+                        <span class="date-divider">/</span> <a href="../tag/hacks/">hacks</a>
+                </section>
+                <h1 class="post-full-title">Faster preprocessing with FastAI</h1>
+            </header>
+
+            <figure class="post-full-image">
+                <img srcset="https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 300w,
+                            https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 600w,
+                            https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 1000w,
+                            https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 2000w" sizes="(max-width: 800px) 400px,
+                            (max-width: 1170px) 700px,
+                            1400px" src="https://images.unsplash.com/photo-1523655223303-4e9ef5234587?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ" alt="Faster preprocessing with FastAI">
+            </figure>
+
+            <section class="post-full-content">
+                <div class="post-content">
+                    <p>This is a short blog which can help you preprocess your data even faster. Whenever you do machine learning, data may not be available in the form you want to train your models. You need to preprocess it. This may take a lot of time if you have a lot of data and the only solution you can think of is to use multi-processing or multi-threading to make it faster. Now it may seem difficult to do that so fastai comes with a super handy <code>parallel()</code> which can help you with that.</p>
+<h2 id="getting-started">Getting started</h2><p>Let's see what all we need. Open up your jupyter notebook and type: <code>doc(parallel)</code></p><figure class="kg-card kg-image-card"><img src="../content/images/2019/03/Screenshot-from-2019-03-27-14-16-54.png" class="kg-image"><figcaption><a href="https://docs.fast.ai/core.html#parallel">More details</a></figcaption></figure><p><strong>func</strong> defines the function that will take your input and do the required stuff, <strong>arr</strong> defines the list of inputs and <strong>max_workers</strong> defines the number of workers available on your system. By default, it will use up all your workers.</p>
+<h2 id="example">Example</h2>
+<p>I will use the same example from the lesson 7 of fast.ai course. Here is our function. The function takes a high-res image and crappifies it to a low-res image.</p>
+<pre><code class="language-python">class crappifier(object):
+    def __init__(self, path_lr, path_hr):
+        self.path_lr = path_lr
+        self.path_hr = path_hr              
+        
+    def __call__(self, fn, i):       
+        dest = self.path_lr/fn.relative_to(self.path_hr)    
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        img = PIL.Image.open(fn)
+        targ_sz = resize_to(img, 96, use_min=True)
+        img = img.resize(targ_sz, resample=PIL.Image.BILINEAR).convert('RGB')
+        w,h = img.size
+        q = random.randint(10,70)
+        ImageDraw.Draw(img).text((random.randint(0,w//2),random.randint(0,h//2)), str(q), fill=(255,255,255))
+        img.save(dest, quality=q)
+</code></pre>
+<p>Wait, what? It's is not a function, it's a class.<br>
+Here is the beauty of python class. You can use a class as a function by defining a <code>__call__</code> method. Whenever you create an object of this class and call it just like a function it will call the <code>__call__</code> method. Also, notice that it takes a parameter <code>i</code> which defines the index of your item from the list. You can simply ignore it be replacing it with <code>_</code> but remember <code>parallel()</code> needs it.<br>
+Let's run it with and without the <code>parallel()</code> to see the difference:</p>
+<pre><code># Paths
+PATH = untar_data(URLs.PETS)
+PATH_HR = PATH/'images'
+PATH_LR = PATH/'crappy'
+
+# Data and crappifier object
+il = ImageList.from_folder(PATH_HR)
+craf = crappifier(PATH_LR, PATH_HR)
+</code></pre>
+<p>Without <code>parallel()</code><br>
+<img src="../content/images/2019/03/Screenshot-from-2019-03-27-15-03-56.png" alt="Screenshot-from-2019-03-27-15-03-56"></p>
+<p>With <code>parallel()</code><br>
+<img src="../content/images/2019/03/Screenshot-from-2019-03-27-15-04-17.png" alt="Screenshot-from-2019-03-27-15-04-17"></p>
+<p>That's it, super easy and super handy. FastAI comes with more cool features that can help you train your models. All thanks to <a href="https://twitter.com/jeremyphoward">@jeremyhoward</a> and his team.</p>
+                </div>
+            </section>
+
+
+            <footer class="post-full-footer">
+
+
+                    
+<section class="author-card">
+        <span class="avatar-wrapper"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"></path></g></svg>
+</span>
+    <section class="author-card-content">
+        <h4 class="author-card-name"><a href="../author/rohit/">Rohit Gupta</a></h4>
+            <p>Read <a href="../author/rohit/">more posts</a> by this author.</p>
+    </section>
+</section>
+<div class="post-full-footer-right">
+    <a class="author-card-button" href="../author/rohit/">Read More</a>
+</div>
+
+
+            </footer>
+
+
+        </article>
+
+    </div>
+</main>
+
+<aside class="read-next outer">
+    <div class="inner">
+        <div class="read-next-feed">
+
+
+                <article class="post-card post tag-general ">
+
+    <a class="post-card-image-link" href="../blog-for-everyone/">
+        <img class="post-card-image" srcset="https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 300w,
+                    https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 600w,
+                    https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 1000w,
+                    https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ 2000w" sizes="(max-width: 1000px) 400px, 700px" src="https://images.unsplash.com/photo-1508780709619-79562169bc64?ixlib=rb-1.2.1&amp;q=80&amp;fm=jpg&amp;crop=entropy&amp;cs=tinysrgb&amp;w=1080&amp;fit=max&amp;ixid=eyJhcHBfaWQiOjExNzczfQ" alt="Blog for everyone">
+    </a>
+
+    <div class="post-card-content">
+
+        <a class="post-card-content-link" href="../blog-for-everyone/">
+
+            <header class="post-card-header">
+                    <span class="post-card-tags">general</span>
+                <h2 class="post-card-title">Blog for everyone</h2>
+            </header>
+
+            <section class="post-card-excerpt">
+                <p>Ghost is an amazing blogging platform, and also one of the hyped blogging platform out for public. It is a light-weight open-source blogging platform. Ghost is fully customizable, with many themes available. In</p>
+            </section>
+
+        </a>
+
+        <footer class="post-card-meta">
+
+            <ul class="author-list">
+                <li class="author-list-item">
+
+                    <div class="author-name-tooltip">
+                        Rohit Gupta
+                    </div>
+
+                        <a href="../author/rohit/" class="static-avatar author-profile-image"><svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="M3.513 18.998C4.749 15.504 8.082 13 12 13s7.251 2.504 8.487 5.998C18.47 21.442 15.417 23 12 23s-6.47-1.558-8.487-4.002zM12 12c2.21 0 4-2.79 4-5s-1.79-4-4-4-4 1.79-4 4 1.79 5 4 5z" fill="#FFF"></path></g></svg>
+</a>
+                </li>
+            </ul>
+
+            <span class="reading-time">5 min read</span>
+
+        </footer>
+
+    </div>
+
+</article>
+
+        </div>
+    </div>
+</aside>
+
+<div class="floating-header">
+    <div class="floating-header-logo">
+        <a href="http://rohitgr7.github.io">
+                <img src="../content/images/size/w30/2019/01/android-chrome-512x512.png" alt="Rohit Gupta icon">
+            <span>Rohit Gupta</span>
+        </a>
+    </div>
+    <span class="floating-header-divider">—</span>
+    <div class="floating-header-title">Faster preprocessing with FastAI</div>
+    <div class="floating-header-share">
+        <div class="floating-header-share-label">Share this <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 24 24">
+    <path d="M7.5 15.5V4a1.5 1.5 0 1 1 3 0v4.5h2a1 1 0 0 1 1 1h2a1 1 0 0 1 1 1H18a1.5 1.5 0 0 1 1.5 1.5v3.099c0 .929-.13 1.854-.385 2.748L17.5 23.5h-9c-1.5-2-5.417-8.673-5.417-8.673a1.2 1.2 0 0 1 1.76-1.605L7.5 15.5zm6-6v2m-3-3.5v3.5m6-1v2"></path>
+</svg>
+</div>
+        <a class="floating-header-share-tw" href="https://twitter.com/share?text=Faster%20preprocessing%20with%20FastAI&amp;url=http://rohitgr7.github.io/faster-preprocessing-with-fastai/" onclick="window.open(this.href, 'share-twitter', 'width=550,height=235');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M30.063 7.313c-.813 1.125-1.75 2.125-2.875 2.938v.75c0 1.563-.188 3.125-.688 4.625a15.088 15.088 0 0 1-2.063 4.438c-.875 1.438-2 2.688-3.25 3.813a15.015 15.015 0 0 1-4.625 2.563c-1.813.688-3.75 1-5.75 1-3.25 0-6.188-.875-8.875-2.625.438.063.875.125 1.375.125 2.688 0 5.063-.875 7.188-2.5-1.25 0-2.375-.375-3.375-1.125s-1.688-1.688-2.063-2.875c.438.063.813.125 1.125.125.5 0 1-.063 1.5-.25-1.313-.25-2.438-.938-3.313-1.938a5.673 5.673 0 0 1-1.313-3.688v-.063c.813.438 1.688.688 2.625.688a5.228 5.228 0 0 1-1.875-2c-.5-.875-.688-1.813-.688-2.75 0-1.063.25-2.063.75-2.938 1.438 1.75 3.188 3.188 5.25 4.25s4.313 1.688 6.688 1.813a5.579 5.579 0 0 1 1.5-5.438c1.125-1.125 2.5-1.688 4.125-1.688s3.063.625 4.188 1.813a11.48 11.48 0 0 0 3.688-1.375c-.438 1.375-1.313 2.438-2.563 3.188 1.125-.125 2.188-.438 3.313-.875z"></path></svg>
+        </a>
+        <a class="floating-header-share-fb" href="https://www.facebook.com/sharer/sharer.php?u=http://rohitgr7.github.io/faster-preprocessing-with-fastai/" onclick="window.open(this.href, 'share-facebook','width=580,height=296');return false;">
+            <svg xmlns="http://www.w3.org/2000/svg" viewbox="0 0 32 32"><path d="M19 6h5V0h-5c-3.86 0-7 3.14-7 7v3H8v6h4v16h6V16h5l1-6h-6V7c0-.542.458-1 1-1z"></path></svg>
+        </a>
+    </div>
+    <progress id="reading-progress" class="progress" value="0">
+        <div class="progress-container">
+            <span class="progress-bar"></span>
+        </div>
+    </progress>
+</div>
+
+
+
+
+        <footer class="site-footer outer">
+            <div class="site-footer-content inner">
+                <section class="copyright"><a href="http://rohitgr7.github.io">Rohit Gupta</a> © 2019</section>
+                <nav class="site-footer-nav">
+                    <a href="http://rohitgr7.github.io">Latest Posts</a>
+                    
+                    <a href="https://twitter.com/iamroht" target="_blank" rel="noopener">Twitter</a>
+                    <a href="https://ghost.org" target="_blank" rel="noopener">Ghost</a>
+                </nav>
+            </div>
+        </footer>
+
+    </div>
+
+
+    <script>
+        var images = document.querySelectorAll('.kg-gallery-image img');
+        images.forEach(function (image) {
+            var container = image.closest('.kg-gallery-image');
+            var width = image.attributes.width.value;
+            var height = image.attributes.height.value;
+            var ratio = width / height;
+            container.style.flex = ratio + ' 1 0%';
+        })
+    </script>
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous">
+    </script>
+    <script type="text/javascript" src="../assets/built/jquery.fitvids.js?v=b3d76577c3"></script>
+
+
+    <script>
+
+// NOTE: Scroll performance is poor in Safari
+// - this appears to be due to the events firing much more slowly in Safari.
+//   Dropping the scroll event and using only a raf loop results in smoother
+//   scrolling but continuous processing even when not scrolling
+$(document).ready(function () {
+    // Start fitVids
+    var $postContent = $(".post-full-content");
+    $postContent.fitVids();
+    // End fitVids
+
+    var progressBar = document.querySelector('#reading-progress');
+    var header = document.querySelector('.floating-header');
+    var title = document.querySelector('.post-full-title');
+
+    var lastScrollY = window.scrollY;
+    var lastWindowHeight = window.innerHeight;
+    var lastDocumentHeight = $(document).height();
+    var ticking = false;
+
+    function onScroll() {
+        lastScrollY = window.scrollY;
+        requestTick();
+    }
+
+    function onResize() {
+        lastWindowHeight = window.innerHeight;
+        lastDocumentHeight = $(document).height();
+        requestTick();
+    }
+
+    function requestTick() {
+        if (!ticking) {
+            requestAnimationFrame(update);
+        }
+        ticking = true;
+    }
+
+    function update() {
+        var trigger = title.getBoundingClientRect().top + window.scrollY;
+        var triggerOffset = title.offsetHeight + 35;
+        var progressMax = lastDocumentHeight - lastWindowHeight;
+
+        // show/hide floating header
+        if (lastScrollY >= trigger + triggerOffset) {
+            header.classList.add('floating-active');
+        } else {
+            header.classList.remove('floating-active');
+        }
+
+        progressBar.setAttribute('max', progressMax);
+        progressBar.setAttribute('value', lastScrollY);
+
+        ticking = false;
+    }
+
+    window.addEventListener('scroll', onScroll, {passive: true});
+    window.addEventListener('resize', onResize, false);
+
+    update();
+
+});
+</script>
+
+
+    
+
+</body>
